@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="sw"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Huduma Chap</title>
+<style>
+body{font-family:system-ui,sans-serif;margin:0;background:#f3f5f9;color:#14213d}
+header{background:#14213d;color:#fff;padding:12px;display:flex;justify-content:space-between;align-items:center}
+main{padding:14px;max-width:480px;margin:auto}
+.card{background:#fff;border-radius:12px;padding:12px;margin:10px 0;border:1px solid #dde2ec}
+button,input,select{font:inherit;padding:11px;border-radius:10px;border:1px solid #cfd6e4;width:100%;margin:4px 0;box-sizing:border-box}
+button{background:#f2b705;border:0;font-weight:700;color:#14213d}
+button.alt{background:#fff;border:1px solid #cfd6e4}
+small{color:#5c667a}
+a.btn{display:inline-block;background:#1f8a5b;color:#fff;padding:10px 14px;border-radius:10px;margin:4px 6px 0 0;text-decoration:none;font-weight:700}
+</style></head><body>
+<header><b>Huduma Chap</b><button id="lang" style="width:auto;padding:6px 10px;margin:0"></button></header>
+<main id="app"></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+const sb=supabase.createClient('https://yqclcleayapbehuabvgu.supabase.co','sb_publishable_mvayIxILrgMU7SYTrJIfxQ_yPK_Xh2B');
+const T={sw:{home:'Mwanzo',jobs:'Kazi zangu',out:'Toka',email:'Barua pepe',pw:'Nenosiri (herufi 6+)',name:'Jina kamili',phone:'Simu (2547XXXXXXXX)',cust:'Mteja',fundi:'Fundi',signup:'Jisajili',login:'Ingia',have:'Tayari una akaunti? Ingia',new:'Huna akaunti? Jisajili',contact:'Wasiliana',none:'Hakuna bado',call:'Piga simu',wa:'WhatsApp',acc:'Kubali kazi',price:'Bei ya mwisho (KES)',done:'Kamilisha',conf:'Thibitisha bei',comm:'Commission',area:'Eneo',save:'Hifadhi',wait:'Wasifu wako unasubiri kuhakikiwa.',st:{contacted:'Amewasiliana',in_progress:'Inaendelea',awaiting_confirm:'Inasubiri uthibitisho',completed:'Imekamilika',disputed:'Mgogoro'}},
+en:{home:'Home',jobs:'My jobs',out:'Log out',email:'Email',pw:'Password (6+ characters)',name:'Full name',phone:'Phone (2547XXXXXXXX)',cust:'Customer',fundi:'Fundi',signup:'Sign up',login:'Log in',have:'Have an account? Log in',new:'No account? Sign up',contact:'Contact',none:'Nothing yet',call:'Call',wa:'WhatsApp',acc:'Accept job',price:'Final price (KES)',done:'Mark complete',conf:'Confirm price',comm:'Commission',area:'Area',save:'Save',wait:'Your profile is waiting for verification.',st:{contacted:'Contacted',in_progress:'In progress',awaiting_confirm:'Awaiting confirmation',completed:'Completed',disputed:'Disputed'}}};
+let L='sw',me=null,fp=null,mode='login';
+const $=id=>document.getElementById(id),app=$('app'),t=k=>T[L][k];
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const num=p=>{p=(p||'').replace(/\D/g,'');return p.startsWith('0')?'254'+p.slice(1):p};
+const msg=m=>alert(m);
+$('lang').onclick=()=>{L=L==='sw'?'en':'sw';boot()};
+
+async function boot(){
+  $('lang').textContent=L==='sw'?'EN':'SW';
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session)return viewAuth();
+  const uid=session.user.id;
+  const {data:p}=await sb.from('profiles').select('*').eq('id',uid).maybeSingle();
+  if(!p)return viewAuth();
+  me=p;
+  if(p.role==='fundi'){
+    const {data:f}=await sb.from('fundi_profiles').select('*').eq('user_id',uid).maybeSingle();
+    fp=f;
+    if(!f)return viewFundiSetup();
+  }
+  viewHome();
+}
+function viewAuth(){
+  const s=mode==='signup';
+  app.innerHTML=`<div class="card"><h2>${s?t('signup'):t('login')}</h2>
+  <input id="em" type="email" placeholder="${t('email')}">
+  <input id="pw" type="password" placeholder="${t('pw')}">
+  ${s?`<input id="nm" placeholder="${t('name')}"><input id="ph" type="tel" placeholder="${t('phone')}"><select id="rl"><option value="customer">${t('cust')}</option><option value="fundi">${t('fundi')}</option></select>`:''}
+  <button onclick="auth()">${s?t('signup'):t('login')}</button>
+  <button class="alt" onclick="mode=mode==='signup'?'login':'signup';viewAuth()">${s?t('have'):t('new')}</button></div>`;
+}
+async function auth(){
+  const email=$('em').value.trim(),password=$('pw').value;
+  if(mode==='signup'){
+    const {data,error}=await sb.auth.signUp({email,password});
+    if(error)return msg(error.message);
+    if(!data.session)return msg('Turn off Confirm email in Supabase: Authentication > Sign In / Providers > Email.');
+    const {error:e2}=await sb.from('profiles').insert({id:data.user.id,role:$('rl').value,full_name:$('nm').value,phone:num($('ph').value),language:L});
+    if(e2)return msg(e2.message);
+  }else{
+    const {error}=await sb.auth.signInWithPassword({email,password});
+    if(error)return msg(error.message);
+  }
+  boot();
+}
+function nav(){return `<div style="display:flex;gap:6px"><button class="alt" onclick="viewHome()">${t('home')}</button><button class="alt" onclick="viewJobs()">${t('jobs')}</button><button class="alt" onclick="sb.auth.signOut().then(boot)">${t('out')}</button></div>`}
+async function viewFundiSetup(){
+  const {data}=await sb.from('trades').select('*');
+  app.innerHTML=`<div class="card"><input id="dn" placeholder="${t('name')}" value="${esc(me.full_name)}"><select id="tr">${data.map(x=>`<option value="${x.id}">${esc(x['name_'+L])}</option>`).join('')}</select><input id="ar" placeholder="${t('area')}"><button onclick="saveF()">${t('save')}</button></div>`;
+}
+async function saveF(){
+  const {error}=await sb.from('fundi_profiles').insert({user_id:me.id,display_name:$('dn').value,trade_id:+$('tr').value,area:$('ar').value});
+  if(error)return msg(error.message);
+  boot();
+}
+async function viewHome(){
+  if(me.role==='fundi')return viewJobs(fp&&fp.verified?'':t('wait'));
+  const {data,error}=await sb.from('fundi_profiles').select('user_id,display_name,area,rating_avg,jobs_done,trades(name_en,name_sw)').eq('verified',true);
+  if(error)return msg(error.message);
+  app.innerHTML=nav()+(data.length?data.map(f=>`<div class="card"><b>${esc(f.display_name)}</b><br><small>${esc(f.trades?.['name_'+L]||'')} · ${esc(f.area||'')} · ★ ${f.rating_avg} (${f.jobs_done})</small><button onclick="contact('${f.user_id}')">${t('contact')}</button></div>`).join(''):`<p>${t('none')}</p>`);
+}
+async function contact(id){
+  const {error}=await sb.from('jobs').insert({customer_id:me.id,fundi_id:id});
+  if(error)return msg(error.message);
+  viewJobs();
+}
+async function viewJobs(banner){
+  const {data,error}=await sb.from('jobs').select('*,fundi:profiles!jobs_fundi_id_fkey(full_name,phone),customer:profiles!jobs_customer_id_fkey(full_name,phone)').order('created_at',{ascending:false});
+  if(error)return msg(error.message);
+  const f=me.role==='fundi';
+  app.innerHTML=nav()+(banner?`<div class="card">${banner}</div>`:'')+(data.length?data.map(j=>{
+    const o=f?j.customer:j.fundi,p=num(o&&o.phone);
+    let a=p?`<a class="btn" href="tel:+${p}">${t('call')}</a><a class="btn" href="https://wa.me/${p}">${t('wa')}</a>`:'';
+    if(f&&j.status==='contacted')a+=`<button onclick="setJob(${j.id},{status:'in_progress'})">${t('acc')}</button>`;
+    if(f&&j.status==='in_progress')a+=`<input id="p${j.id}" type="number" placeholder="${t('price')}"><button onclick="finish(${j.id})">${t('done')}</button>`;
+    if(!f&&j.status==='awaiting_confirm')a+=`<p>KES ${j.final_price}</p><button onclick="confirmJob(${j.id},${j.final_price})">${t('conf')}</button>`;
+    return `<div class="card"><b>${esc(o&&o.full_name)}</b> <small>#${j.id}</small><br><small>${t('st')[j.status]}${j.commission?` · ${t('comm')} KES ${j.commission}`:''}</small><br>${a}</div>`;
+  }).join(''):`<p>${t('none')}</p>`);
+}
+async function setJob(id,patch){
+  const {error}=await sb.from('jobs').update(patch).eq('id',id);
+  if(error)return msg(error.message);
+  viewJobs();
+}
+function finish(id){const v=+$('p'+id).value;if(v)setJob(id,{status:'awaiting_confirm',final_price:v})}
+function confirmJob(id,price){setJob(id,{status:'completed',commission:Math.round(price*0.08)})}
+boot();
+</script></body></html>
