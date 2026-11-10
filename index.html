@@ -1,110 +1,73 @@
-<!DOCTYPE html>
-<html lang="sw"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Huduma Chap</title>
+<!doctype html>
+<html lang="sw">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#103b35"><meta name="description" content="Huduma Chap - pata fundi na huduma karibu nawe.">
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg">
+<title>Huduma Chap | Huduma karibu nawe</title>
 <style>
-body{font-family:system-ui,sans-serif;margin:0;background:#f3f5f9;color:#14213d}
-header{background:#14213d;color:#fff;padding:12px;display:flex;justify-content:space-between;align-items:center}
-main{padding:14px;max-width:480px;margin:auto}
-.card{background:#fff;border-radius:12px;padding:12px;margin:10px 0;border:1px solid #dde2ec}
-button,input,select{font:inherit;padding:11px;border-radius:10px;border:1px solid #cfd6e4;width:100%;margin:4px 0;box-sizing:border-box}
-button{background:#f2b705;border:0;font-weight:700;color:#14213d}
-button.alt{background:#fff;border:1px solid #cfd6e4}
-small{color:#5c667a}
-a.btn{display:inline-block;background:#1f8a5b;color:#fff;padding:10px 14px;border-radius:10px;margin:4px 6px 0 0;text-decoration:none;font-weight:700}
-</style></head><body>
-<header><b>Huduma Chap</b><button id="lang" style="width:auto;padding:6px 10px;margin:0"></button></header>
-<main id="app"></main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+:root{--green:#126b50;--dark:#103b35;--mint:#eaf5ef;--ink:#172522;--muted:#64736e;--line:#e1e9e4;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:#f6f8f6;color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}
+header{background:var(--dark);color:white;padding:16px max(18px,calc((100% - 1050px)/2));display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:5}
+.brand{font-weight:850;font-size:22px;letter-spacing:-.6px}.brand span{color:#8ee0b6}.tag{font-size:11px;color:#d5e8df}
+button,select,input,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:11px 15px;font-weight:700}.primary{background:var(--green);color:white}.secondary{background:var(--mint);color:var(--dark)}.plain{background:transparent;color:inherit;border:1px solid #ffffff55;padding:8px 10px}
+main{max-width:1050px;margin:auto;padding:24px 18px 60px}.hero{background:linear-gradient(120deg,#103b35,#17694f);color:white;border-radius:22px;padding:28px;display:grid;grid-template-columns:1.4fr .6fr;gap:20px;align-items:center}.hero h1{font-size:clamp(28px,5vw,44px);line-height:1.08;margin:0 0 12px}.hero p{color:#d6e9e0;margin:0 0 20px}.hero-mark{font-size:80px;text-align:center}.search{display:flex;gap:8px;background:white;padding:7px;border-radius:14px;max-width:600px}.search input{border:0;outline:0;min-width:0;flex:1;padding:9px;color:#172522}.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:28px 0 14px}.section-head h2{font-size:21px;margin:0}.muted{color:var(--muted);font-size:13px}.categories{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}.cat{background:white;border:1px solid var(--line);border-radius:15px;padding:14px 8px;text-align:center;color:var(--ink)}.cat .emoji{font-size:27px;display:block;margin-bottom:5px}.cat.active{border:2px solid var(--green);background:var(--mint)}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.card{background:white;border:1px solid var(--line);border-radius:17px;padding:16px}.avatar{width:48px;height:48px;border-radius:15px;background:var(--mint);display:grid;place-items:center;font-size:25px}.provider-top{display:flex;gap:11px;align-items:center}.provider-top h3{margin:0;font-size:16px}.pill{display:inline-block;font-size:11px;background:var(--mint);color:var(--green);padding:4px 8px;border-radius:99px;margin-top:5px}.card p{margin:12px 0;color:var(--muted);font-size:13px}.card-actions{display:flex;gap:7px}.card-actions button{flex:1;padding:9px 7px;font-size:13px}.empty{background:white;border:1px dashed #b8c9bf;border-radius:15px;padding:24px;text-align:center;color:var(--muted);grid-column:1/-1}.panel{background:white;border:1px solid var(--line);border-radius:18px;padding:18px;margin-top:22px}.panel h2{margin:0 0 12px}.field{display:grid;gap:5px;margin:10px 0}.field label{font-weight:650;font-size:13px}.field input,.field select,.field textarea{width:100%;padding:11px;border:1px solid #d4dfd8;border-radius:10px;background:white;color:var(--ink)}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}.tabs button{background:white;border:1px solid var(--line);color:var(--dark)}.tabs button.active{background:var(--dark);color:white}.hidden{display:none!important}.notice{background:#fff7df;border:1px solid #f0dfa6;border-radius:12px;padding:12px;font-size:13px;color:#6e5615;margin-top:12px}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#172522;color:white;padding:12px 18px;border-radius:99px;display:none;z-index:10;max-width:90%;text-align:center}footer{text-align:center;color:var(--muted);font-size:12px;padding:25px}
+@media(max-width:720px){.hero{grid-template-columns:1fr}.hero-mark{display:none}.categories{grid-template-columns:repeat(3,1fr)}.cards{grid-template-columns:1fr}.row{grid-template-columns:1fr}header{padding:13px 16px}.tag{display:none}}
+</style></head>
+<body>
+<header><div><div class="brand">HUDUMA <span>CHAP</span></div><div class="tag" data-i18n="tag">Huduma unayohitaji, kwa haraka!</div></div><div style="display:flex;gap:8px;align-items:center"><button class="plain" id="langBtn">EN</button><button class="plain" id="installBtn" hidden data-i18n="install">Install</button></div></header>
+<main>
+<section class="hero"><div><h1 data-i18n="heroTitle">Pata fundi unayemwamini, karibu nawe.</h1><p data-i18n="heroText">Tafuta huduma, linganisha watoa huduma na wasiliana nao moja kwa moja.</p><div class="search"><input id="searchInput" data-placeholder="searchPlaceholder" placeholder="Unahitaji huduma gani?"><button class="primary" id="searchBtn" data-i18n="search">Tafuta</button></div></div><div class="hero-mark">🛠️</div></section>
+<div class="section-head"><h2 data-i18n="categories">Huduma zinazopatikana</h2><span class="muted" data-i18n="demo">Toleo la majaribio</span></div>
+<div class="categories" id="categories"></div>
+<div class="section-head"><h2 data-i18n="providers">Watoa huduma</h2><span class="muted" id="resultCount"></span></div>
+<div class="cards" id="providers"></div>
+<div class="tabs"><button class="active" data-tab="request" data-i18n="requestTab">Omba huduma</button><button data-tab="join" data-i18n="joinTab">Jiunge kama fundi</button><button data-tab="admin" data-i18n="adminTab">Majaribio / Admin</button></div>
+<section class="panel" id="requestPanel"><h2 data-i18n="requestTitle">Tuma ombi la huduma</h2><form id="requestForm">
+<div class="row"><div class="field"><label data-i18n="yourName">Jina lako</label><input name="name" required placeholder="Jina kamili"></div><div class="field"><label data-i18n="phone">Namba ya simu</label><input name="phone" required type="tel" placeholder="07XXXXXXXX"></div></div>
+<div class="row"><div class="field"><label data-i18n="service">Huduma</label><select name="service" id="requestService"></select></div><div class="field"><label data-i18n="area">Eneo</label><input name="area" required placeholder="Mf. Gongo la Mboto"></div></div>
+<div class="field"><label data-i18n="details">Eleza unachohitaji</label><textarea name="details" rows="3" placeholder="Maelezo mafupi..."></textarea></div><button class="primary" type="submit" data-i18n="sendRequest">Hifadhi ombi (demo)</button></form><div class="notice" data-i18n="requestNotice">Hili ni jaribio tu. Ombi linahifadhiwa kwenye kifaa hiki; halitumwi kwa fundi halisi.</div></section>
+<section class="panel hidden" id="joinPanel"><h2 data-i18n="joinTitle">Jisajili kama mtoa huduma</h2><form id="joinForm">
+<div class="row"><div class="field"><label data-i18n="fullName">Jina kamili</label><input name="name" required></div><div class="field"><label data-i18n="phone">Namba ya simu</label><input name="phone" required type="tel"></div></div>
+<div class="row"><div class="field"><label data-i18n="service">Huduma</label><select name="service" id="joinService"></select></div><div class="field"><label data-i18n="area">Eneo</label><input name="area" required placeholder="Mf. Ukonga"></div></div>
+<div class="field"><label data-i18n="experience">Uzoefu / maelezo</label><textarea name="experience" rows="3"></textarea></div><button class="primary" type="submit" data-i18n="joinSubmit">Tuma usajili (demo)</button></form><div class="notice" data-i18n="joinNotice">Usiweke kitambulisho au taarifa nyeti kwenye toleo hili la majaribio.</div></section>
+<section class="panel hidden" id="adminPanel"><h2 data-i18n="adminTitle">Muhtasari wa majaribio</h2><div class="row"><div class="card"><div class="muted" data-i18n="savedRequests">Maombi yaliyohifadhiwa</div><h2 id="reqCount">0</h2></div><div class="card"><div class="muted" data-i18n="providerApplications">Maombi ya watoa huduma</div><h2 id="joinCount">0</h2></div></div><h3 data-i18n="requestList">Maombi ya huduma</h3><div id="requestList" class="muted">Hakuna maombi bado.</div><h3 data-i18n="joinList">Usajili wa watoa huduma</h3><div id="joinList" class="muted">Hakuna usajili bado.</div><button class="secondary" id="resetBtn" data-i18n="reset">Futa data za majaribio</button><div class="notice" data-i18n="adminNotice">Dashibodi hii ni ya majaribio tu, si salama kwa matumizi ya biashara au data halisi za wateja.</div></section>
+<footer>© <span id="year"></span> Huduma Chap · <span data-i18n="footer">Toleo la majaribio — si huduma ya moja kwa moja.</span></footer>
+</main><div class="toast" id="toast"></div>
 <script>
-const sb=supabase.createClient('https://yqclcleayapbehuabvgu.supabase.co','sb_publishable_mvayIxILrgMU7SYTrJIfxQ_yPK_Xh2B');
-const T={sw:{home:'Mwanzo',jobs:'Kazi zangu',out:'Toka',email:'Barua pepe',pw:'Nenosiri (herufi 6+)',name:'Jina kamili',phone:'Simu (2547XXXXXXXX)',cust:'Mteja',fundi:'Fundi',signup:'Jisajili',login:'Ingia',have:'Tayari una akaunti? Ingia',new:'Huna akaunti? Jisajili',contact:'Wasiliana',none:'Hakuna bado',call:'Piga simu',wa:'WhatsApp',acc:'Kubali kazi',price:'Bei ya mwisho (KES)',done:'Kamilisha',conf:'Thibitisha bei',comm:'Commission',area:'Eneo',save:'Hifadhi',wait:'Wasifu wako unasubiri kuhakikiwa.',st:{contacted:'Amewasiliana',in_progress:'Inaendelea',awaiting_confirm:'Inasubiri uthibitisho',completed:'Imekamilika',disputed:'Mgogoro'}},
-en:{home:'Home',jobs:'My jobs',out:'Log out',email:'Email',pw:'Password (6+ characters)',name:'Full name',phone:'Phone (2547XXXXXXXX)',cust:'Customer',fundi:'Fundi',signup:'Sign up',login:'Log in',have:'Have an account? Log in',new:'No account? Sign up',contact:'Contact',none:'Nothing yet',call:'Call',wa:'WhatsApp',acc:'Accept job',price:'Final price (KES)',done:'Mark complete',conf:'Confirm price',comm:'Commission',area:'Area',save:'Save',wait:'Your profile is waiting for verification.',st:{contacted:'Contacted',in_progress:'In progress',awaiting_confirm:'Awaiting confirmation',completed:'Completed',disputed:'Disputed'}}};
-let L='sw',me=null,fp=null,mode='login';
-const $=id=>document.getElementById(id),app=$('app'),t=k=>T[L][k];
-const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const num=p=>{p=(p||'').replace(/\D/g,'');return p.startsWith('0')?'254'+p.slice(1):p};
-const msg=m=>alert(m);
-$('lang').onclick=()=>{L=L==='sw'?'en':'sw';boot()};
-
-async function boot(){
-  $('lang').textContent=L==='sw'?'EN':'SW';
-  const {data:{session}}=await sb.auth.getSession();
-  if(!session)return viewAuth();
-  const uid=session.user.id;
-  const {data:p}=await sb.from('profiles').select('*').eq('id',uid).maybeSingle();
-  if(!p)return viewAuth();
-  me=p;
-  if(p.role==='fundi'){
-    const {data:f}=await sb.from('fundi_profiles').select('*').eq('user_id',uid).maybeSingle();
-    fp=f;
-    if(!f)return viewFundiSetup();
-  }
-  viewHome();
-}
-function viewAuth(){
-  const s=mode==='signup';
-  app.innerHTML=`<div class="card"><h2>${s?t('signup'):t('login')}</h2>
-  <input id="em" type="email" placeholder="${t('email')}">
-  <input id="pw" type="password" placeholder="${t('pw')}">
-  ${s?`<input id="nm" placeholder="${t('name')}"><input id="ph" type="tel" placeholder="${t('phone')}"><select id="rl"><option value="customer">${t('cust')}</option><option value="fundi">${t('fundi')}</option></select>`:''}
-  <button onclick="auth()">${s?t('signup'):t('login')}</button>
-  <button class="alt" onclick="mode=mode==='signup'?'login':'signup';viewAuth()">${s?t('have'):t('new')}</button></div>`;
-}
-async function auth(){
-  const email=$('em').value.trim(),password=$('pw').value;
-  if(mode==='signup'){
-    const {data,error}=await sb.auth.signUp({email,password});
-    if(error)return msg(error.message);
-    if(!data.session)return msg('Turn off Confirm email in Supabase: Authentication > Sign In / Providers > Email.');
-    const {error:e2}=await sb.from('profiles').insert({id:data.user.id,role:$('rl').value,full_name:$('nm').value,phone:num($('ph').value),language:L});
-    if(e2)return msg(e2.message);
-  }else{
-    const {error}=await sb.auth.signInWithPassword({email,password});
-    if(error)return msg(error.message);
-  }
-  boot();
-}
-function nav(){return `<div style="display:flex;gap:6px"><button class="alt" onclick="viewHome()">${t('home')}</button><button class="alt" onclick="viewJobs()">${t('jobs')}</button><button class="alt" onclick="sb.auth.signOut().then(boot)">${t('out')}</button></div>`}
-async function viewFundiSetup(){
-  const {data}=await sb.from('trades').select('*');
-  app.innerHTML=`<div class="card"><input id="dn" placeholder="${t('name')}" value="${esc(me.full_name)}"><select id="tr">${data.map(x=>`<option value="${x.id}">${esc(x['name_'+L])}</option>`).join('')}</select><input id="ar" placeholder="${t('area')}"><button onclick="saveF()">${t('save')}</button></div>`;
-}
-async function saveF(){
-  const {error}=await sb.from('fundi_profiles').insert({user_id:me.id,display_name:$('dn').value,trade_id:+$('tr').value,area:$('ar').value});
-  if(error)return msg(error.message);
-  boot();
-}
-async function viewHome(){
-  if(me.role==='fundi')return viewJobs(fp&&fp.verified?'':t('wait'));
-  const {data,error}=await sb.from('fundi_profiles').select('user_id,display_name,area,rating_avg,jobs_done,trades(name_en,name_sw)').eq('verified',true);
-  if(error)return msg(error.message);
-  app.innerHTML=nav()+(data.length?data.map(f=>`<div class="card"><b>${esc(f.display_name)}</b><br><small>${esc(f.trades?.['name_'+L]||'')} · ${esc(f.area||'')} · ★ ${f.rating_avg} (${f.jobs_done})</small><button onclick="contact('${f.user_id}')">${t('contact')}</button></div>`).join(''):`<p>${t('none')}</p>`);
-}
-async function contact(id){
-  const {error}=await sb.from('jobs').insert({customer_id:me.id,fundi_id:id});
-  if(error)return msg(error.message);
-  viewJobs();
-}
-async function viewJobs(banner){
-  const {data,error}=await sb.from('jobs').select('*,fundi:profiles!jobs_fundi_id_fkey(full_name,phone),customer:profiles!jobs_customer_id_fkey(full_name,phone)').order('created_at',{ascending:false});
-  if(error)return msg(error.message);
-  const f=me.role==='fundi';
-  app.innerHTML=nav()+(banner?`<div class="card">${banner}</div>`:'')+(data.length?data.map(j=>{
-    const o=f?j.customer:j.fundi,p=num(o&&o.phone);
-    let a=p?`<a class="btn" href="tel:+${p}">${t('call')}</a><a class="btn" href="https://wa.me/${p}">${t('wa')}</a>`:'';
-    if(f&&j.status==='contacted')a+=`<button onclick="setJob(${j.id},{status:'in_progress'})">${t('acc')}</button>`;
-    if(f&&j.status==='in_progress')a+=`<input id="p${j.id}" type="number" placeholder="${t('price')}"><button onclick="finish(${j.id})">${t('done')}</button>`;
-    if(!f&&j.status==='awaiting_confirm')a+=`<p>KES ${j.final_price}</p><button onclick="confirmJob(${j.id},${j.final_price})">${t('conf')}</button>`;
-    return `<div class="card"><b>${esc(o&&o.full_name)}</b> <small>#${j.id}</small><br><small>${t('st')[j.status]}${j.commission?` · ${t('comm')} KES ${j.commission}`:''}</small><br>${a}</div>`;
-  }).join(''):`<p>${t('none')}</p>`);
-}
-async function setJob(id,patch){
-  const {error}=await sb.from('jobs').update(patch).eq('id',id);
-  if(error)return msg(error.message);
-  viewJobs();
-}
-function finish(id){const v=+$('p'+id).value;if(v)setJob(id,{status:'awaiting_confirm',final_price:v})}
-function confirmJob(id,price){setJob(id,{status:'completed',commission:Math.round(price*0.08)})}
-boot();
+const translations={
+sw:{tag:"Huduma unayohitaji, kwa haraka!",install:"Sakinisha",heroTitle:"Pata fundi unayemwamini, karibu nawe.",heroText:"Tafuta huduma, linganisha watoa huduma na wasiliana nao moja kwa moja.",searchPlaceholder:"Unahitaji huduma gani?",search:"Tafuta",categories:"Huduma zinazopatikana",demo:"Toleo la majaribio",providers:"Watoa huduma",requestTab:"Omba huduma",joinTab:"Jiunge kama fundi",adminTab:"Majaribio / Admin",requestTitle:"Tuma ombi la huduma",yourName:"Jina lako",phone:"Namba ya simu",service:"Huduma",area:"Eneo",details:"Eleza unachohitaji",sendRequest:"Hifadhi ombi (demo)",requestNotice:"Hili ni jaribio tu. Ombi linahifadhiwa kwenye kifaa hiki; halitumwi kwa fundi halisi.",joinTitle:"Jisajili kama mtoa huduma",fullName:"Jina kamili",experience:"Uzoefu / maelezo",joinSubmit:"Tuma usajili (demo)",joinNotice:"Usiweke kitambulisho au taarifa nyeti kwenye toleo hili la majaribio.",adminTitle:"Muhtasari wa majaribio",savedRequests:"Maombi yaliyohifadhiwa",providerApplications:"Maombi ya watoa huduma",requestList:"Maombi ya huduma",joinList:"Usajili wa watoa huduma",reset:"Futa data za majaribio",adminNotice:"Dashibodi hii ni ya majaribio tu, si salama kwa matumizi ya biashara au data halisi za wateja.",footer:"Toleo la majaribio — si huduma ya moja kwa moja.",all:"Zote",plumbing:"Fundi bomba",electrical:"Umeme",mechanic:"Fundi magari",cleaning:"Usafi wa nyumba",phoneRepair:"Matengenezo ya simu",moving:"Usafirishaji",verified:"Mfano tu",from:"Eneo",call:"Piga simu",whatsapp:"WhatsApp",empty:"Hakuna watoa huduma kwenye kichujio hiki.",requestSaved:"Ombi limehifadhiwa kwenye kifaa hiki.",joinSaved:"Usajili umehifadhiwa kwenye kifaa hiki.",resetDone:"Data za majaribio zimefutwa.",noRequests:"Hakuna maombi bado.",noJoins:"Hakuna usajili bado."},
+en:{tag:"The service you need, faster!",install:"Install",heroTitle:"Find a trusted professional near you.",heroText:"Discover services, compare providers and contact them directly.",searchPlaceholder:"What service do you need?",search:"Search",categories:"Available services",demo:"Trial version",providers:"Service providers",requestTab:"Request a service",joinTab:"Join as a provider",adminTab:"Trial / Admin",requestTitle:"Request a service",yourName:"Your name",phone:"Phone number",service:"Service",area:"Area",details:"Describe what you need",sendRequest:"Save request (demo)",requestNotice:"Trial only. Requests are saved on this device; they are not sent to a real provider.",joinTitle:"Register as a provider",fullName:"Full name",experience:"Experience / description",joinSubmit:"Submit registration (demo)",joinNotice:"Do not enter ID documents or sensitive information in this trial version.",adminTitle:"Trial summary",savedRequests:"Saved requests",providerApplications:"Provider applications",requestList:"Service requests",joinList:"Provider registrations",reset:"Clear trial data",adminNotice:"This dashboard is for testing only. It is not secure for business use or real customer data.",footer:"Trial version — not a live service.",all:"All",plumbing:"Plumbing",electrical:"Electrical",mechanic:"Car mechanic",cleaning:"House cleaning",phoneRepair:"Phone repair",moving:"Moving",verified:"Sample only",from:"Area",call:"Call",whatsapp:"WhatsApp",empty:"No providers in this filter.",requestSaved:"Request saved on this device.",joinSaved:"Registration saved on this device.",resetDone:"Trial data cleared.",noRequests:"No requests yet.",noJoins:"No registrations yet."}
+};
+let lang="sw",active="all",deferredPrompt=null;
+const cats=[["all","🌟"],["plumbing","🚰"],["electrical","⚡"],["mechanic","🚗"],["cleaning","🧹"],["phoneRepair","📱"],["moving","🚚"]];
+const demoProviders=[
+{name:"Juma Fundi",service:"plumbing",area:"Gongo la Mboto",phone:"0712345678",price:"Bei kwa makubaliano",icon:"🚰",rating:"4.8"},
+{name:"Asha Electrical",service:"electrical",area:"Ukonga",phone:"0755123456",price:"Kuanzia TSh 15,000",icon:"⚡",rating:"4.7"},
+{name:"Mussa Garage",service:"mechanic",area:"Tabata",phone:"0688123456",price:"Bei kwa makubaliano",icon:"🚗",rating:"4.6"},
+{name:"Neema Cleaning",service:"cleaning",area:"Gongo la Mboto",phone:"0711987654",price:"Kuanzia TSh 20,000",icon:"🧹",rating:"4.9"},
+{name:"Kassim Phone Repair",service:"phoneRepair",area:"Ilala",phone:"0622123456",price:"Baada ya ukaguzi",icon:"📱",rating:"4.5"},
+{name:"Chap Movers",service:"moving",area:"Ukonga",phone:"0744123456",price:"Bei kwa makubaliano",icon:"🚚",rating:"4.6"}
+];
+const $=id=>document.getElementById(id), t=k=>translations[lang][k]||k;
+function renderCats(){ $("categories").innerHTML=cats.map(([id,emoji])=>`<button class="cat ${active===id?'active':''}" data-cat="${id}"><span class="emoji">${emoji}</span>${t(id)}</button>`).join("");document.querySelectorAll("[data-cat]").forEach(b=>b.onclick=()=>{active=b.dataset.cat;renderCats();renderProviders()})}
+function renderProviders(){let q=$("searchInput").value.toLowerCase();let list=demoProviders.filter(p=>(active==="all"||p.service===active)&&(`${p.name} ${p.area} ${t(p.service)}`).toLowerCase().includes(q));$("resultCount").textContent=list.length+" "+(lang==="sw"?"matokeo":"results");$("providers").innerHTML=list.length?list.map(p=>`<article class="card"><div class="provider-top"><div class="avatar">${p.icon}</div><div><h3>${p.name}</h3><span class="pill">${t("verified")}</span></div></div><p>${t(p.service)} · ${p.area}<br>⭐ ${p.rating} · ${p.price}</p><div class="card-actions"><button class="primary" onclick="callProvider('${p.phone}')">${t("call")}</button><button class="secondary" onclick="waProvider('${p.phone}','${p.name}')">${t("whatsapp")}</button></div></article>`).join(""):`<div class="empty">${t("empty")}</div>`}
+function fillSelect(id){$(id).innerHTML=cats.slice(1).map(([k])=>`<option value="${k}">${t(k)}</option>`).join("")}
+function setLang(){document.documentElement.lang=lang;document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=t(el.dataset.i18n));document.querySelectorAll("[data-placeholder]").forEach(el=>el.placeholder=t(el.dataset.placeholder));$("langBtn").textContent=lang==="sw"?"EN":"SW";renderCats();renderProviders();fillSelect("requestService");fillSelect("joinService");renderAdmin()}
+function toast(msg){$("toast").textContent=msg;$("toast").style.display="block";setTimeout(()=>$("toast").style.display="none",2600)}
+function getData(k){try{return JSON.parse(localStorage.getItem(k)||"[]")}catch{return []}}
+function saveData(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function callProvider(phone){location.href="tel:"+phone}
+function waProvider(phone,name){let msg=lang==="sw"?`Habari ${name}, nimekupata kupitia Huduma Chap. Naomba maelezo ya huduma yako.`:`Hello ${name}, I found you on Huduma Chap. I would like to ask about your service.`;window.open("https://wa.me/255"+phone.replace(/^0/,"").replace(/\D/g,"")+"?text="+encodeURIComponent(msg),"_blank")}
+function renderAdmin(){let r=getData("hc_requests"),j=getData("hc_joins");$("reqCount").textContent=r.length;$("joinCount").textContent=j.length;$("requestList").innerHTML=r.length?r.map(x=>`<p><b>${x.name}</b> · ${t(x.service)} · ${x.area} · ${x.phone}</p>`).join(""):t("noRequests");$("joinList").innerHTML=j.length?j.map(x=>`<p><b>${x.name}</b> · ${t(x.service)} · ${x.area} · ${x.phone}</p>`).join(""):t("noJoins")}
+$("langBtn").onclick=()=>{lang=lang==="sw"?"en":"sw";setLang()};
+$("searchBtn").onclick=renderProviders;$("searchInput").addEventListener("input",renderProviders);
+document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-tab]").forEach(x=>x.classList.toggle("active",x===b));["request","join","admin"].forEach(k=>$(k+"Panel").classList.toggle("hidden",k!==b.dataset.tab));renderAdmin()});
+$("requestForm").onsubmit=e=>{e.preventDefault();let x=Object.fromEntries(new FormData(e.target));saveData("hc_requests",[...getData("hc_requests"),{...x,date:new Date().toISOString()}]);e.target.reset();renderAdmin();toast(t("requestSaved"))};
+$("joinForm").onsubmit=e=>{e.preventDefault();let x=Object.fromEntries(new FormData(e.target));saveData("hc_joins",[...getData("hc_joins"),{...x,date:new Date().toISOString()}]);e.target.reset();renderAdmin();toast(t("joinSaved"))};
+$("resetBtn").onclick=()=>{if(confirm(lang==="sw"?"Una uhakika unataka kufuta data za majaribio?":"Clear all trial data?")){localStorage.removeItem("hc_requests");localStorage.removeItem("hc_joins");renderAdmin();toast(t("resetDone"))}};
+$("year").textContent=new Date().getFullYear();setLang();
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;$("installBtn").hidden=false});
+$("installBtn").onclick=async()=>{if(deferredPrompt){deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null}else toast("Open browser menu and choose Add to Home Screen")};
+if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js").catch(()=>{});
 </script></body></html>
